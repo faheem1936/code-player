@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Code Player</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="javascriptjQuery.js"></script>
+
+	<style type="text/css">
+		body{
+			margin: 0;
+			padding: 0;
+			font-family: sans-serif;
+
+
+		}
+		#logo{
+			font-weight: bold;
+			float: left;
+			padding: 5px;
+		}
+		#buttonContainer{
+			width: 300px;
+			margin: 0 auto;
+
+		}
+		.togglebutton{
+			float: left;
+			padding: 5px;
+			border: 1px solid #AAA;
+			border-right: none;
+			background-color: #CCC;
+		}
+		#header{
+			background-color: #EEE;
+			height: 35px;
+			padding: 2px;
+		}
+		#output{
+			border-right: 1px solid #AAA;
+			border-top-right-radius: 5px;
+			border-bottom-right-radius: 5px;
+		}
+		#html{
+			border-top-left-radius: 5px;
+			border-bottom-left-radius: 5px;
+		}
+		.highlightedbutton{
+			background-color: aliceblue;
+		}
+		#bodyContainer{
+			padding: 0 auto;
+			margin-top: 0px;
+		}
+		.panel{
+			height: 765px;
+			float: left;
+		}
+		.hidden{
+			display: none;
+		}
+		iframe{
+			border: none;
+		}
+		textarea{
+			border-top: none;
+			resize: none;
+		}
+
+
+
+
+	</style>
+</head>
+<body>
+	<div id="header">
+		<div id="logo">
+
+			CodePlayer
+
+		</div>
+		<div id="buttonContainer">
+
+			<div class="togglebutton" id="html">HTML</div>
+
+			<div class="togglebutton" id="css">CSS</div>
+
+			<div class="togglebutton" id="javascript">JAVASCRIPT</div>
+
+			<div class="togglebutton" id="output">OUTPUT</div>
+		</div>
+	</div>
+		<div id="bodyContainer"> 
+
+		<textarea class="panel" id="htmlpanel"><p>  Hello World </p></textarea>
+
+		<textarea class="panel hidden" id="csspanel">p{ color: red; }</textarea>
+
+		<textarea class="panel hidden" id="javascriptpanel"> alert("hello world");</textarea>
+
+	    <iframe class="panel" id="outputpanel"></iframe>
+
+	</div>
+
+	<script>
+
+
+$(document).ready(function(){
+
+    $(".togglebutton").hover(
+        function () {
+            $(this).addClass("highlightedbutton");
+        },
+        function () {
+            $(this).removeClass("highlightedbutton");
+
+            function resizePanels(){
+        var active = $(".panel:not(.hidden)").length;
+        if(active === 0) return;
+
+        $(".panel").width(
+            ($(window).width() / active) - 10
+        );
+    }
+
+    $(".togglebutton").on("click", function(){
+        var panelId = $(this).attr("id") + "panel";
+        $("#" + panelId).removeClass("hidden");
+        resizePanels();
+    });
+        }
+    );
+
+});
+
+
+    $(".panel").height(
+        $(window).height() - $("header").height() - 20
+    );
+      $(".panel").width( ($(window).width() / 2) - 10 );
+
+		$("textarea").on("keyup change paste", function(){
+
+        var html = $("#htmlpanel").val();
+        var css  = "<style>" + $("#csspanel").val() + "</style>";
+        var js   = "<script>" + $("#javascriptpanel").val() + "<\/script>";
+
+        var iframe = document.getElementById("outputpanel");
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(
+            "<!DOCTYPE html><html><head>" +
+            css +
+            "</head><body>" +
+            html +
+            js +
+            "</body></html>"
+        );
+        iframe.contentWindow.document.close();
+
+    });
+
+
+		  
+
+	</script>
+
+
+</body>
+</html>
